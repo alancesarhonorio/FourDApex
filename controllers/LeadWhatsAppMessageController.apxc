@@ -19,7 +19,7 @@ public class LeadWhatsAppMessageController {
    
     public PageReference doSearch() {
         if(searchText == '' || searchText == null){
-            ApexPages.addmessage(new ApexPages.message(ApexPages.severity.WARNING,'Please enter Lead Name'));
+            ApexPages.addmessage(new ApexPages.message(ApexPages.severity.WARNING,'Por favor entre com o nome do Lead'));
         }else{
             results = (List<Lead>)[FIND :searchText RETURNING Lead(Id, Name, Email, Phone)][0];
         }
@@ -28,8 +28,8 @@ public class LeadWhatsAppMessageController {
     
     public PageReference sendMessage(){
         Lead lead =[Select Name, Phone From Lead where id = :leadId limit 1];
-        ApexPages.addmessage(new ApexPages.message(ApexPages.severity.INFO,'Sending Message to Lead: '+lead.Name));
-        String message = 'Olá '+lead.Name+' tudo bem? Informamos que já estamos analisando seu cadastro para se tornar um de nossos clientes. Em breve retornaremos o contato';
+        ApexPages.addmessage(new ApexPages.message(ApexPages.severity.INFO,'Enviando mensagem para: '+lead.Name));
+        String message = 'Que bom te ter aqui '+lead.Name+' tudo bem? só peço um tempinho para que você seja atendimento rapidamente por um dos nossos atendentes';
         WhatsAppMessageUtils.sendTextMessage(message, lead.Phone, lead.Name);
         return null; 
     }
