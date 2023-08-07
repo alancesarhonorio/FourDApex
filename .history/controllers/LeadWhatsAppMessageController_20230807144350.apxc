@@ -1,0 +1,37 @@
+public class LeadWhatsAppMessageController {
+  
+    String searchText;
+    List<Lead> results;
+    public Id leadId {get; set;}
+    
+    public String getSearchText() {
+       return searchText;
+    }
+
+    public void setSearchText(String s) {
+        searchText = s;
+    }
+
+    public List<Lead> getResults() {  
+        return results;
+    }
+
+   
+    public PageReference doSearch() {
+        if(searchText == '' || searchText == null){
+            ApexPages.addmessage(new ApexPages.message(ApexPages.severity.WARNING,'Por favor entre com o nome do Lead'));
+        }else{
+            results = (List<Lead>)[FIND :searchText RETURNING Lead(Id, Name, Email, Phone)][0];
+        }
+        return null;
+    }
+    
+    public PageReference sendMessage(){
+        Lead lead =[Select Name, Phone From Lead where id = :leadId limit 1];
+        ApexPages.addmessage(new ApexPages.message(ApexPages.severity.INFO,'Enviando mensagem para: '+lead.Name));
+        String message = 'Que bom te ter aqui '+lead.Name+' tudo bem? só peço um tempinho para que você seja atendimento rapidamente por um dos nossos atendentes';
+        WhatsAppMessageUtils.sendTextMessage(message, lead.Phone, lead.Name);
+        return null; 
+    }
+
+}

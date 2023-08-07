@@ -22,7 +22,7 @@ trigger LeadInsertTrigger on Lead (before insert) {
                         lead.PostalCode = postalCode;  
                         
                     }else{
-                        System.debug('Postal Code '+postalCode+' is not a number or is incomplete');
+                        System.debug('O número '+postalCode+' não é um Cep válido');
                     }     
                 }
             }    
